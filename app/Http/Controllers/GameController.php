@@ -20,14 +20,6 @@ class GameController extends Controller
 
     public function getTopViewerCounts(Request $request)
     {
-        // calculate in application layer
-        $games = Game::all();
-
-        foreach($games as $game)
-        {
-
-        }
-
         $games = DB::select(DB::raw(
             'SELECT
                 g.*,
