@@ -8,9 +8,11 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Laravel\Socialite\Facades\Socialite;
-use Illuminate\Support\Facades\Http;
 use App\Models\User;
+use App\Models\Stream;
+use App\Models\Game;
 use Illuminate\Support\Facades\Auth;
+
 class LoginController extends Controller
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
@@ -19,6 +21,7 @@ class LoginController extends Controller
     {
         $socialUser = Socialite::driver('twitch')->user();
         
+        // get user by twitch id or create if doesn't exist
         $user = User::whereTwitchId($socialUser->id)->whereEmail($socialUser->email)->first();
 
         if(empty($user))
@@ -26,16 +29,17 @@ class LoginController extends Controller
             $user = User::create([
                 'username' => $socialUser->name,
                 'email' => $socialUser->email,
-                'twitch_id' => $socialUser->id
+                'twitch_id' => $socialUser->id,
+                'token' => $socialUser->token
             ]);
+        } else {
+            $user->token = $socialUser->token;
+            $user->save();
         }
 
         Auth::login($user);
 
-        return redirect()->to('dashboard');
-        dd($user->token);
-        $response = Http::withHeaders(['Client-Id' => env('TWITCH_CLIENT_ID')])->withToken($user->token)->get('https://api.twitch.tv/helix/streams');
 
-        dd($response->body());
+        return redirect()->to('streams');
     }
 }

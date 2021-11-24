@@ -21,6 +21,7 @@ class User extends Authenticatable
         'username',
         'email',
         'twitch_id',
+        'token'
     ];
 
     /**
@@ -41,4 +42,9 @@ class User extends Authenticatable
     //protected $casts = [
     //    'email_verified_at' => 'datetime',
     //];
+
+    public function streams()
+    {
+        return $this->belongsToMany(Stream::class);
+    }
 }
