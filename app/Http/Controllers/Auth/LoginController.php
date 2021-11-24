@@ -40,6 +40,6 @@ class LoginController extends Controller
         Auth::login($user);
 
 
-        return redirect()->to('streams');
+        return redirect()->to('dashboard');
     }
 }

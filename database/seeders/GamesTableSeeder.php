@@ -14,14 +14,7 @@ class GamesTableSeeder extends Seeder
      */
     public function run()
     {
-        $token_response = Http::post('https://id.twitch.tv/oauth2/token', [
-            'client_id' => env('TWITCH_CLIENT_ID'),
-            'client_secret' => env('TWITCH_CLIENT_SECRET'),
-            'grant_type' => 'client_credentials'
-        ]);
-
-
-        $this->getGames($token_response->object()->access_token);
+        $this->getGames(get_twitch_access_token());
     }
 
     private function getGames($access_token, $cursor = null)

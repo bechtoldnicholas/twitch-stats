@@ -6,21 +6,21 @@
             <table>
                 <thead>
                     <tr>
-                        <th>Game</th>
+                        <th>Date</th>
                         <th>Stream Count</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($games as $game)
+                    @foreach($streams as $start_date => $stream)
                         <tr>
-                            <td class="p-2">{{$game->name}}</td>
-                            <td class="p-2">{{$game->streams_count}}</td>
+                            <td class="p-2">{{$start_date}}</td>
+                            <td class="p-2">{{$stream->count()}}</td>
                         </tr>
                     @endforeach
                 </tbody>
             </table>
         
         
-            {!!$games->links()!!}                      
+                           
     </div>
 @endsection

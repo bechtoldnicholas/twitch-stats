@@ -11,8 +11,26 @@ class StreamController extends Controller
 
     public function get(Request $request)
     {
-        $streams = Stream::where('viewer_count', '>', 10000)->get();
-        dd($streams[0]->game);
+        if($request->order == 'asc')
+        {
+            $order = 'ASC';
+        } else {
+            $order = 'DESC';
+        }
+
+        $streams = Stream::orderBy('viewer_count', $order)->take(100)->get();
+
+        return view('streams', compact('streams'));
+    }
+
+    public function getByStartDate(Request $request)
+    {
+        $streams = Stream::select('*')
+                    ->get()
+                    ->groupBy(function($stream) {
+                        return date("Y-m-d H:00:00", strtotime($stream->start_date));
+                    });
+        return view('streams-by-date', compact('streams'));
     }
 
 }

@@ -18,7 +18,7 @@ class CreateStreamsTable extends Migration
             $table->string('channel_name')->nullable();
             $table->string('stream_title')->nullable();
             $table->integer('viewer_count')->default(0);
-            $table->string('start_date')->nullable();
+            $table->timestamp('start_date')->nullable();
             $table->timestamps();
         });
 

@@ -18,6 +18,21 @@
             body {
                 font-family: 'Nunito', sans-serif;
             }
+            table {
+                font-family: arial, sans-serif;
+                border-collapse: collapse;
+                width: 100%;
+            }
+
+            td, th {
+                border: 1px solid #dddddd;
+                text-align: left;
+                padding: 8px;
+            }
+
+            tr:nth-child(even) {
+                background-color: #dddddd;
+            }
         </style>
     </head>
     <body class="antialiased">
@@ -28,9 +43,11 @@
                 <div class="mt-8 bg-white dark:bg-gray-800 overflow-hidden shadow sm:rounded-lg">
                     <div class="grid grid-cols-1 md:grid-cols-1">
                         @yield('content')
-                        <div class="p-6">
-                            <a href="{{route('dashboard')}}">Dashboard</a>
-                        </div>
+                        @if(request()->route()->uri != '/')
+                            <div class="p-6">
+                                <a href="{{route('dashboard')}}" style="text-decoration: underline">Dashboard</a>
+                            </div>
+                        @endif
                     </div>
                 </div>
             </div>

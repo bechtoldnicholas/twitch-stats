@@ -15,14 +15,7 @@ class TagsTableSeeder extends Seeder
      */
     public function run()
     {
-        $token_response = Http::post('https://id.twitch.tv/oauth2/token', [
-            'client_id' => env('TWITCH_CLIENT_ID'),
-            'client_secret' => env('TWITCH_CLIENT_SECRET'),
-            'grant_type' => 'client_credentials'
-        ]);
-
-
-        $this->getTags($token_response->object()->access_token);
+        $this->getTags(get_twitch_access_token());
     }
 
     private function getTags($access_token, $cursor = null)

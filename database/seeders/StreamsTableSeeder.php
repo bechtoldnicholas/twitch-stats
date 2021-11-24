@@ -14,14 +14,8 @@ class StreamsTableSeeder extends Seeder
      */
     public function run()
     {
-        $token_response = Http::post('https://id.twitch.tv/oauth2/token', [
-            'client_id' => env('TWITCH_CLIENT_ID'),
-            'client_secret' => env('TWITCH_CLIENT_SECRET'),
-            'grant_type' => 'client_credentials'
-        ]);
-
-
-        $this->getStreams($token_response->object()->access_token);
+        \Db::table('streams')->truncate();
+        $this->getStreams(get_twitch_access_token());
     }
 
     private function getStreams($access_token, $cursor = null)
@@ -43,7 +37,7 @@ class StreamsTableSeeder extends Seeder
                 $stream->channel_name = $twitch_stream->user_name;
                 $stream->stream_title = $twitch_stream->title;
                 $stream->viewer_count = $twitch_stream->viewer_count;
-                $stream->start_date = $twitch_stream->started_at;
+                $stream->start_date = date("Y-m-d H:i:s",strtotime($twitch_stream->started_at));
                 $stream->game_id = $twitch_stream->game_id != "" ? $twitch_stream->game_id : null;
                 $stream->save();
 
